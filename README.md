@@ -1,21 +1,7 @@
 Elephant Backups
 ================
-it won't forget your stuff
-
-
-
-backup agent to be run from cron
-
-There is no local configuration, just a URL for the backup server that gets passed on the command line and a passkey
-
-The first request is for the job parameters, then it steps through those, backing up things to the backup server
-
-On completion it sends a summary of what it did.
-
-Failures can happen, if it resumes in the same day (or same backup period) it will get a shorter job list.
-
-This is primarily written and tested on Python 3, however backward compatibility is a goal.
-
+The Elephant will remember your stuff
+--------------------------
 
 This describes a backup solution that is resistant to a number of specific threats. It can be used for anything from a single desktop to a datacenter, but the scenario it was built for is backing up a few dozen LAMP servers. This is quite an untrusting solution compared to most backups over ssh. It is designed so that an attacker could compromise and gain root on the machine being backed up and this wouldn’t help them gain access to the backup server, and they wouldn’t be able to access or destroy backups. Additionally an attacker could compromise and gain root on the backup server and this wouldn’t help them gain access to the backed up machines, and wouldn’t get them access to the backups.
 
@@ -34,19 +20,50 @@ Throttling, should be a feature - so we can optionally destress the machine bein
 The backup agent on the machines should have very little configuration, just the location of the backup server and optionally any encryption keys. This means that the backup server can’t request unencrypted files if the backup server were to be compromised.
 The encryption being used initially is symmetric passphrase encryption - and that will be stored in plain on the client machine. This is OK, if you break into the client machine and can read root’s crontab then you have already won, you have access to all the plain text files that were about to be encrypted. The important thing is that knowing the symmetric encryption key doesn’t help you to destroy or access past backups.
 Symlinks
+--
+
 We should totally support symbolic and hard links to things, and put them back the way they were if we are doing a restore.
 Right now it is just assuming that files are files, it walks a directory tree reading stuff.
 Permissions
+--
+
 When submitting we should send the uid and gid and permission flags.
 We should be aware that when restoring things the uid and gid may be different.
+
 Restoring to the same machine
+--
+
 It may be that the machine is not marked as self-restorable, in that case the server won’t serve up old versions of a file to the machine that backed them up.
 We should be able to flag any version of any file as “to be restored”
 Then after the next backup - so it will do one last backup of the current file - it will restore files queued to be restored. This is going to be for relatively small numbers of files at a time, not a full machine restore.
+
 Downloading one file from the admin interface
+--
+
 This is going to be supported, you will be able to download the encrypted file, or give the key and decrypt on the server
+
 Restoring the lot to a new machine
+--
+
 You are going to need the symmetric passphrase that the old machine used. Without that your files are toast.
 If the whole machine is marked as to be restored, there may be some transforms on the paths to be done.
 
 
+backup agent to be run from cron
+
+There is no local configuration, just a URL for the backup server that gets passed on the command line and a passkey
+
+Things we care about a lot
+--
+If the client machine is compromised it should not help the attacker to attack the backups or backup server
+
+If the server machine is compromised that should not help the attacker to attack the client or read any backups
+
+Things we care about a little
+--
+The system should perform well on the server side - a backup shouldn't starve other backups of time
+
+Things for which we have not a care in the world
+--
+We don't care if this is stressful on the client machine
+We don't care if this is not as multithreaded as it could be on the client machine
