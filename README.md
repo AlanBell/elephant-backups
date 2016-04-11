@@ -55,15 +55,17 @@ There is no local configuration, just a URL for the backup server that gets pass
 
 Things we care about a lot
 --
-If the client machine is compromised it should not help the attacker to attack the backups or backup server
-
-If the server machine is compromised that should not help the attacker to attack the client or read any backups
+* If the client machine is compromised it should not help the attacker to attack the backups or backup server
+* If the server machine is compromised that should not help the attacker to attack the client or read any backups
 
 Things we care about a little
 --
-The system should perform well on the server side - a backup shouldn't starve other backups of time
+* The system should perform well and fairly on the server side - it should be able to accept multiple machines backing up at once - using all the resources of the server efficiently in parallel and fairly so that a backup of a fast machine can't deny service to a slower client.
+* It should be reasonably space efficient, but we prioritise encryption over compression
+* It should be network efficient
+* It should be fast to restore - this is more important than being fast to backup
 
 Things for which we have not a care in the world
 --
-We don't care if this is stressful on the client machine
-We don't care if this is not as multithreaded as it could be on the client machine
+* We don't care if this is stressful on the client machine
+* We don't care if this is not as multithreaded as it could be on the client machine
