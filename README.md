@@ -19,11 +19,13 @@ Throttling, should be a feature - so we can optionally destress the machine bein
 
 The backup agent on the machines should have very little configuration, just the location of the backup server and optionally any encryption keys. This means that the backup server can’t request unencrypted files if the backup server were to be compromised.
 The encryption being used initially is symmetric passphrase encryption - and that will be stored in plain on the client machine. This is OK, if you break into the client machine and can read root’s crontab then you have already won, you have access to all the plain text files that were about to be encrypted. The important thing is that knowing the symmetric encryption key doesn’t help you to destroy or access past backups.
+
 Symlinks
 --
 
 We should totally support symbolic and hard links to things, and put them back the way they were if we are doing a restore.
 Right now it is just assuming that files are files, it walks a directory tree reading stuff.
+
 Permissions
 --
 
@@ -55,11 +57,13 @@ There is no local configuration, just a URL for the backup server that gets pass
 
 Things we care about a lot
 --
+
 * If the client machine is compromised it should not help the attacker to attack the backups or backup server
 * If the server machine is compromised that should not help the attacker to attack the client or read any backups
 
 Things we care about a little
 --
+
 * The system should perform well and fairly on the server side - it should be able to accept multiple machines backing up at once - using all the resources of the server efficiently in parallel and fairly so that a backup of a fast machine can't deny service to a slower client.
 * It should be reasonably space efficient, but we prioritise encryption over compression
 * It should be network efficient
