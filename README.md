@@ -73,3 +73,8 @@ Things for which we have not a care in the world
 --
 * We don't care if this is stressful on the client machine
 * We don't care if this is not as multithreaded as it could be on the client machine
+
+Two factor authentication
+--
+
+In general the system is going to be running in the background, we can't use 2fa for unattended encryption, but we can require the user to use a security key to make configuration changes or to download files from the admin console.
