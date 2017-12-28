@@ -1,6 +1,6 @@
-Mastodon
+Pachyderm
 ================
-A Mastodon Never Forgets
+An Elephant Never Forgets
 --------------------------
 
 This describes a backup solution that is resistant to a number of specific threats. It can be used for anything from a single desktop to a datacenter, but the scenario it was built for is backing up a few dozen LAMP servers. This is quite an untrusting solution compared to most backups over ssh. It is designed so that an attacker could compromise and gain root on the machine being backed up and this wouldn’t help them gain access to the backup server, and they wouldn’t be able to access or destroy backups. Additionally an attacker could compromise and gain root on the backup server and this wouldn’t help them gain access to the backed up machines, and wouldn’t get them access to the backups.
